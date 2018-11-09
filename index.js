@@ -21,6 +21,8 @@ function draw(matrix) {
 
 // Need to turn boxes with content into a matrix, which then gets concatenated into a string of lines separated by newlines
 function drawSquare(matrix, square) {
+	const color = square.color ? square.color : chalk.reset;
+
 	const y0 = Math.floor(square.y0);
 	const y1 = Math.floor(square.y1);
 	const x0 = Math.floor(square.x0);
@@ -61,7 +63,7 @@ function drawSquare(matrix, square) {
 	for (let ri = y0; ri < y1; ri++) {
 		let col = 0;
 		for (let ci = x0; ci < x1; ci++) {
-			matrix[ri][ci] = rows[row][col];
+			matrix[ri][ci] = color(rows[row][col]);
 			col++;
 		}
 
@@ -74,16 +76,33 @@ module.exports = (input, opts) => {
 		throw new TypeError(`Expected a string, got ${typeof input}`);
 	}
 
-	opts = opts || {};
+	opts = opts || { autocolor: true };
+
+	let randomColors = [];
+	if (opts.autocolor) randomColors = ['white', 'red', 'green', 'yellow', 'blue', 'cyan', 'magenta']
+
+	const randomColor = () => randomColors.splice(Math.floor(Math.random() * randomColors.length), 1) || 'white';
 
 	const data = [
 		{
 			content: 'Foo\n250kb',
-			value: 75,
+			value: 50,
+			color: opts.autocolor && chalk[randomColor()],
 		},
 		{
 			content: 'Bar\n150kb',
 			value: 25,
+			color: opts.autocolor && chalk[randomColor()],
+		},
+		{
+			content: 'Baz\n150kb',
+			value: 5,
+			color: opts.autocolor && chalk[randomColor()],
+		},
+		{
+			content: 'Baz\n150kb',
+			value: 5,
+			color: opts.autocolor && chalk[randomColor()],
 		}
 	];
 
