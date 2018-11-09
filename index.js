@@ -11,8 +11,6 @@ const termSize = require('term-size');
 const columns = Math.floor(termSize().columns / 2);
 const rows = Math.floor(termSize().rows / 2);
 
-console.log(`TERMSIZE: ${rows}x${columns}`);
-
 const chars = cliBoxes.single;
 const NL = '\n';
 const PAD = ' ';
@@ -23,8 +21,6 @@ function draw(matrix) {
 
 // Need to turn boxes with content into a matrix, which then gets concatenated into a string of lines separated by newlines
 function drawSquare(matrix, square) {
-	const text = ansiAlign(square.content);
-
 	const y0 = Math.floor(square.y0);
 	const y1 = Math.floor(square.y1);
 	const x0 = Math.floor(square.x0);
@@ -45,6 +41,19 @@ function drawSquare(matrix, square) {
 		l[l.length-1] = side;
 		return l;
 	});
+
+	// Insert text into middle of middle
+	const text = ansiAlign(square.content);
+	let textLines = text.split(NL);
+	textLines = textLines.map(t => {
+		const padding1 = ' '.repeat(Math.floor((width - 2 - stringWidth(t) - 1)/2));
+		let padding2 = ' '.repeat(width - 2 - stringWidth(t) - stringWidth(padding1));
+
+		return [side, padding1, ...t.split(''), padding2, side].join('');
+	});
+
+	const middleMiddle = Math.floor(middle.length / 2);
+	middle.splice(middleMiddle, textLines.length, ...textLines);
 
 	const rows = [top, ...middle, bottom];
 
