@@ -1,0 +1,51 @@
+{
+	"name": "terminal-treemap",
+	"version": "0.0.0",
+	"description": "Treemaps in the terminal",
+	"license": "MIT",
+	"repository": "c0bra/terminal-treemap",
+	"author": {
+		"name": "Brian Hann",
+		"email": "brian.hann@gmail.com",
+		"url": "n/A"
+	},
+	"bin": "cli.js",
+	"engines": {
+		"node": ">=4"
+	},
+	"scripts": {
+		"test": "xo && nyc ava"
+	},
+	"files": [
+		"index.js",
+		"cli.js"
+	],
+	"keywords": [
+		"cli-app",
+		"cli",
+		""
+	],
+	"dependencies": {
+		"ansi-align": "^2.0.0",
+		"blessed": "^0.1.81",
+		"chalk": "^2.4.1",
+		"cli-box": "^6.0.8",
+		"cli-boxes": "^1.0.0",
+		"meow": "^3.7.0",
+		"squarify": "^1.0.1",
+		"term-size": "^1.2.0",
+		"treemap-calc": "0.0.1"
+	},
+	"devDependencies": {
+		"ava": "^0.20.0",
+		"codecov": "^2.2.0",
+		"nyc": "^11.0.0",
+		"xo": "^0.18.2"
+	},
+	"nyc": {
+		"reporter": [
+			"lcov",
+			"text"
+		]
+	}
+}
