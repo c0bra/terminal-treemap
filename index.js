@@ -17,6 +17,10 @@ const chars = cliBoxes.single;
 const NL = '\n';
 const PAD = ' ';
 
+function draw(matrix) {
+	console.log(matrix.map(x => x.join('')).join(NL));
+}
+
 // Need to turn boxes with content into a matrix, which then gets concatenated into a string of lines separated by newlines
 function drawSquare(matrix, square) {
 	const text = ansiAlign(square.content);
@@ -26,28 +30,10 @@ function drawSquare(matrix, square) {
 	const x0 = Math.floor(square.x0);
 	const x1 = Math.floor(square.x1);
 
-	console.log(square);
-
-	// // Row
-	// for (const ri = 1; ri <= rows; ri++) {
-	// 	for (const ri = 1; ri <= rows; ri++) {
-	// 		char = '';
-	// 		if (ri === 1) {
-	// 			// Top
-	// 		} else if (ri === 1) {
-
-	// 		} else if (ri === 1) {
-
-	// 		}
-	// 	}
-	// }
-
 	const width = Math.floor(x1 - x0);
 	const height = Math.floor(y1 - y0);
 
-	// let lines = text.split(NL);
-	console.log(PAD.repeat(width));
-	let lines = (new Array(height)); //.map(x => PAD.repeat(width));
+	let lines = (new Array(height - 2));
 	lines.fill(new Array(width).fill(PAD));
 
 	const top = [chars.topLeft, ...chars.horizontal.repeat(width - 2), chars.topRight]; //.join('');
@@ -58,24 +44,20 @@ function drawSquare(matrix, square) {
 		l[0] = side;
 		l[l.length-1] = side;
 		return l;
-	}); //.join(NL);
+	});
 
 	const rows = [top, ...middle, bottom];
 
 	let row = 0;
 	for (let ri = y0; ri < y1; ri++) {
-		let col = 0
+		let col = 0;
 		for (let ci = x0; ci < x1; ci++) {
-			// console.log('m', matrix[ri]);
-			// console.log('r', rows[row]);
-			// console.log('mr', ri, ci)
 			matrix[ri][ci] = rows[row][col];
 			col++;
 		}
+
 		row++;
 	}
-
-	// console.log('MATRIX', matrix[0])
 }
 
 module.exports = (input, opts) => {
@@ -100,16 +82,15 @@ module.exports = (input, opts) => {
 
 	const output = squarify(data, container);
 
-	const matrix = new Array(rows);
-	matrix.fill(new Array(columns).fill(' '));
+	const matrix = new Array(rows).fill(null);
+	for (const i in matrix) {
+		matrix[i] = new Array(columns).fill('.');
+	}
 
 	for (const square of output) {
 		drawSquare(matrix, square);
 	}
 
-	console.log(
-		matrix
-			.map(x => x.join(''))
-			.join(NL)
-	);
+	draw(matrix);
+	return;
 };
