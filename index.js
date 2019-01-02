@@ -15,9 +15,13 @@ const chars = cliBoxes.single;
 const NL = '\n';
 const PAD = ' ';
 
-function draw(matrix) {
-	console.log(matrix.map(x => x.join('')).join(NL));
-}
+// function roundTree(tree, prop) {
+// 	for (elm of tree) {
+// 		if (prop) {
+
+// 		}
+// 	}
+// }
 
 // Need to turn boxes with content into a matrix, which then gets concatenated into a string of lines separated by newlines
 function drawSquare(matrix, square) {
@@ -34,8 +38,9 @@ function drawSquare(matrix, square) {
 	let lines = (new Array(height - 2));
 	lines.fill(new Array(width).fill(PAD));
 
-	const top = [chars.topLeft, ...chars.horizontal.repeat(width - 2), chars.topRight]; //.join('');
-	const bottom = [chars.bottomLeft, ...chars.horizontal.repeat(width - 2), chars.bottomRight]; //.join('');
+	const borderChars = chars.horizontal.repeat(width - 2);
+	const top = [chars.topLeft, ...borderChars, chars.topRight];
+	const bottom = [chars.bottomLeft, ...borderChars, chars.bottomRight];
 
 	const side = chars.vertical;
 	const middle = lines.map(l => {
@@ -72,8 +77,8 @@ function drawSquare(matrix, square) {
 }
 
 module.exports = (input, opts) => {
-	if (typeof input !== 'string') {
-		throw new TypeError(`Expected a string, got ${typeof input}`);
+	if (!(input instanceof Array)) {
+		throw new TypeError(`Expected an array, got ${typeof input}`);
 	}
 
 	opts = opts || { autocolor: true };
@@ -83,32 +88,11 @@ module.exports = (input, opts) => {
 
 	const randomColor = () => randomColors.splice(Math.floor(Math.random() * randomColors.length), 1) || 'white';
 
-	const data = [
-		{
-			content: 'Foo\n250kb',
-			value: 50,
-			color: opts.autocolor && chalk[randomColor()],
-		},
-		{
-			content: 'Bar\n150kb',
-			value: 25,
-			color: opts.autocolor && chalk[randomColor()],
-		},
-		{
-			content: 'Baz\n150kb',
-			value: 5,
-			color: opts.autocolor && chalk[randomColor()],
-		},
-		{
-			content: 'Baz\n150kb',
-			value: 5,
-			color: opts.autocolor && chalk[randomColor()],
-		}
-	];
+	input.map(x => x.color = x.color || chalk[randomColor()]);
 
 	const container = {x0: 0, y0: 0, x1: columns, y1: rows};
 
-	const output = squarify(data, container);
+	const output = squarify(input, container);
 
 	const matrix = new Array(rows).fill(null);
 	for (const i in matrix) {
@@ -119,6 +103,5 @@ module.exports = (input, opts) => {
 		drawSquare(matrix, square);
 	}
 
-	draw(matrix);
-	return;
+	return matrix.map(x => x.join('')).join(NL);
 };

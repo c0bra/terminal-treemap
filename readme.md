@@ -2,11 +2,10 @@
 
 > Treemaps in the terminal
 
-
 ## Install
 
 ```
-$ npm install terminal-treemap
+$ npm install --save terminal-treemap
 ```
 
 
@@ -15,52 +14,27 @@ $ npm install terminal-treemap
 ```js
 const terminalTreemap = require('terminal-treemap');
 
-terminalTreemap('unicorns');
-//=> 'unicorns & rainbows'
-```
+const data = [
+	{ content: 'Foo\n250kb', value: 50 },
+	{ content: 'Bar\n150kb', value: 25 },
+	{ content: 'Baz\n150kb', value: 5 },
+	{ content: 'Baz\n150kb', value: 5 },
+];
 
+const output = terminalTreemap(data);
+console.log(output);
+```
+![Example](./example.png)
 
 ## API
 
-### terminalTreemap(input, [options])
+### terminalTreemap(input)
 
-#### input
+Input should be an array of objects where each object has a `content` prop and a `value` prop. The value property will be used to ratio the size of the boxes in the terminal.
 
-Type: `string`
+## Thanks
 
-Lorem ipsum.
-
-#### options
-
-##### foo
-
-Type: `boolean`<br>
-Default: `false`
-
-Lorem ipsum.
-
-
-## CLI
-
-```
-$ npm install --global terminal-treemap
-```
-
-```
-$ terminal-treemap --help
-
-  Usage
-    terminal-treemap [input]
-
-  Options
-    --foo  Lorem ipsum [Default: false]
-
-  Examples
-    $ terminal-treemap
-    unicorns & rainbows
-    $ terminal-treemap ponies
-    ponies & rainbows
-```
+Inspiration from [boxen](https://www.npmjs.com/package/boxen) by [Sindre](https://github.com/sindresorhus/sindresorhus).
 
 
 ## License

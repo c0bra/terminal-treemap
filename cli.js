@@ -17,4 +17,23 @@ const cli = meow(`
 	  ponies & rainbows
 `);
 
-console.log(terminalTreemap(cli.input[0] || 'unicorns'));
+const data = [
+	{
+		content: 'Foo\n250kb',
+		value: 50,
+	},
+	{
+		content: 'Bar\n150kb',
+		value: 25,
+	},
+	{
+		content: 'Baz\n150kb',
+		value: 5,
+	},
+	{
+		content: 'Baz\n150kb',
+		value: 5,
+	}
+];
+
+console.log(terminalTreemap(data || 'unicorns'));
